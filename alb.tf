@@ -100,3 +100,13 @@ resource "aws_security_group_rule" "alb_egress_ecs" {
   security_group_id        = aws_security_group.alb.id
   source_security_group_id = aws_security_group.ecs.id
 }
+
+resource "aws_security_group_rule" "alb_ingress_ecs" {
+  description              = "ECS"
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  security_group_id        = aws_security_group.alb.id
+  source_security_group_id = aws_security_group.ecs.id
+}
