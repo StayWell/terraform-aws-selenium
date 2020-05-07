@@ -1,5 +1,5 @@
 resource "aws_ecs_task_definition" "chrome" {
-  family                   = var.id
+  family                   = "${var.id}-chrome"
   container_definitions    = jsonencode(local.chrome)
   execution_role_arn       = aws_iam_role.this.arn
   requires_compatibilities = ["FARGATE"]
@@ -10,7 +10,7 @@ resource "aws_ecs_task_definition" "chrome" {
 }
 
 resource "aws_ecs_service" "chrome" {
-  name                              = var.id
+  name                              = "${var.id}-chrome"
   cluster                           = aws_ecs_cluster.this.id
   task_definition                   = aws_ecs_task_definition.chrome.arn
   desired_count                     = 1
@@ -71,7 +71,7 @@ locals {
 }
 
 resource "aws_lb_target_group" "chrome" {
-  name        = var.id
+  name        = "${var.id}-chrome"
   port        = local.chrome[0].portMappings[0].containerPort
   protocol    = "HTTP"
   vpc_id      = var.vpc_id

@@ -1,5 +1,5 @@
 resource "aws_ecs_task_definition" "hub" {
-  family                   = var.id
+  family                   = "${var.id}-hub"
   container_definitions    = jsonencode(local.hub)
   execution_role_arn       = aws_iam_role.this.arn
   requires_compatibilities = ["FARGATE"]
@@ -60,7 +60,7 @@ locals {
 }
 
 resource "aws_lb_target_group" "hub" {
-  name        = var.id
+  name        = "${var.id}-hub"
   port        = local.hub[0].portMappings[0].containerPort
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
