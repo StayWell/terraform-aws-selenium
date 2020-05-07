@@ -40,13 +40,6 @@ locals {
       essential   = true
       environment = concat(local.chrome_env, var.environment)
 
-      secrets = [
-        {
-          name      = "MB_DB_PASS"
-          valueFrom = aws_ssm_parameter.this.name
-        },
-      ]
-
       portMappings = [
         {
           containerPort = 4444
