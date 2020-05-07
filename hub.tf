@@ -73,7 +73,7 @@ resource "aws_lb_target_group" "hub" {
 }
 
 resource "aws_lb_listener_rule" "hub" {
-  listener_arn = aws_lb_listener.https.arn
+  listener_arn = aws_lb_listener.this.arn
 
   action {
     type             = "forward"

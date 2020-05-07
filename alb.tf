@@ -14,34 +14,11 @@ resource "aws_lb" "this" {
   }
 }
 
-resource "aws_lb_listener" "http" {
+resource "aws_lb_listener" "this" {
   load_balancer_arn = aws_lb.this.arn
   depends_on        = [aws_lb.this] # https://github.com/terraform-providers/terraform-provider-aws/issues/9976
-  port              = "80"
+  port              = local.hub[0].portMappings[0].containerPort
   protocol          = "HTTP"
-
-  default_action {
-    type = "redirect"
-
-    redirect {
-      port        = "443"
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_lb_listener" "https" {
-  load_balancer_arn = aws_lb.this.arn
-  depends_on        = [aws_lb.this] # https://github.com/terraform-providers/terraform-provider-aws/issues/9976
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = var.ssl_policy
-  certificate_arn   = var.certificate_arn
 
   default_action {
     type = "fixed-response"

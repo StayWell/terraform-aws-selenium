@@ -17,7 +17,6 @@ resource "aws_ecs_service" "chrome" {
   launch_type                       = "FARGATE"
   propagate_tags                    = "SERVICE"
   health_check_grace_period_seconds = 30
-  depends_on                        = [aws_lb_listener_rule.chrome]
   tags                              = var.tags
 
   load_balancer {
@@ -61,11 +60,7 @@ locals {
   chrome_env = [
     {
       name  = "HUB_HOST"
-      value = "https://${aws_route53_record.hub.name}"
-    },
-    {
-      name  = "HUB_PORT"
-      value = tostring(aws_lb_listener.https.port)
+      value = aws_route53_record.hub.name
     },
   ]
 }
@@ -80,21 +75,6 @@ resource "aws_lb_target_group" "chrome" {
 
   health_check {
     path = "/"
-  }
-}
-
-resource "aws_lb_listener_rule" "chrome" {
-  listener_arn = aws_lb_listener.https.arn
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.chrome.arn
-  }
-
-  condition {
-    host_header {
-      values = [aws_route53_record.chrome.name]
-    }
   }
 }
 
