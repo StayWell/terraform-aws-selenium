@@ -4,8 +4,8 @@ resource "aws_ecs_task_definition" "chrome" {
   execution_role_arn       = aws_iam_role.this.arn
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = var.cpu
-  memory                   = var.memory
+  cpu                      = var.node_cpu
+  memory                   = var.node_memory
   tags                     = var.tags
 }
 

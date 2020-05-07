@@ -57,12 +57,22 @@ variable "opera_image" {
   default     = "selenium/node-opera"
 }
 
-variable "cpu" {
+variable "hub_cpu" {
+  description = "(Optional) https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html"
+  default     = "1024"
+}
+
+variable "hub_memory" {
+  description = "(Optional) https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html"
+  default     = "2048" # must be in integer format to maintain idempotency
+}
+
+variable "node_cpu" {
   description = "(Optional) https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html"
   default     = "256"
 }
 
-variable "memory" {
+variable "node_memory" {
   description = "(Optional) https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html"
   default     = "512" # must be in integer format to maintain idempotency
 }
