@@ -7,7 +7,7 @@ variable "public_subnet_ids" {
 }
 
 variable "domain" {
-  description = "(Required) Domain where metabase will be hosted. Example: metabase.mycompany.com"
+  description = "(Required) Domain where selenium will be hosted. Example: selenium.mycompany.com"
 }
 
 variable "zone_id" {
@@ -100,11 +100,6 @@ variable "log_retention" {
 variable "protection" {
   description = "(Optional) Protect ALB and application logs from deletion"
   default     = false
-}
-
-variable "internet_egress" {
-  description = "(Optional) Grant internet access to the Metabase service"
-  default     = true
 }
 
 variable "ssl_policy" {

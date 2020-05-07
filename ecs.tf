@@ -53,7 +53,6 @@ resource "aws_security_group" "ecs" {
 }
 
 resource "aws_security_group_rule" "ecs_egress_internet" {
-  count             = var.internet_egress ? 1 : 0
   description       = "Internet"
   type              = "egress"
   from_port         = 0
@@ -74,7 +73,7 @@ resource "aws_security_group_rule" "ecs_ingress_alb" {
 }
 
 resource "aws_security_group_rule" "ecs_ingress_self" {
-  description       = "ALB"
+  description       = "Self"
   type              = "ingress"
   from_port         = 0
   to_port           = 0
