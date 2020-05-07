@@ -10,7 +10,7 @@ resource "aws_ecs_task_definition" "chrome" {
 }
 
 resource "aws_ecs_service" "chrome" {
-  name                              = "${var.id}-chrome"
+  name                              = "chrome"
   cluster                           = aws_ecs_cluster.this.id
   task_definition                   = aws_ecs_task_definition.chrome.arn
   desired_count                     = 1
@@ -42,7 +42,7 @@ locals {
 
       portMappings = [
         {
-          containerPort = 4444
+          containerPort = 5555
         },
       ]
 
