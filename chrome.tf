@@ -13,17 +13,10 @@ resource "aws_ecs_service" "chrome" {
   name                              = "chrome"
   cluster                           = aws_ecs_cluster.this.id
   task_definition                   = aws_ecs_task_definition.chrome.arn
-  desired_count                     = 1
+  desired_count                     = var.chrome_replicas
   launch_type                       = "FARGATE"
   propagate_tags                    = "SERVICE"
-  health_check_grace_period_seconds = 30
   tags                              = var.tags
-
-  load_balancer {
-    target_group_arn = aws_lb_target_group.chrome.id
-    container_name   = local.chrome[0].name
-    container_port   = local.chrome[0].portMappings[0].containerPort
-  }
 
   network_configuration {
     security_groups = [aws_security_group.ecs.id]
@@ -63,19 +56,6 @@ locals {
       value = aws_route53_record.hub.name
     },
   ]
-}
-
-resource "aws_lb_target_group" "chrome" {
-  name        = "${var.id}-chrome"
-  port        = local.chrome[0].portMappings[0].containerPort
-  protocol    = "HTTP"
-  vpc_id      = var.vpc_id
-  target_type = "ip"
-  tags        = var.tags
-
-  health_check {
-    path = "/"
-  }
 }
 
 resource "aws_route53_record" "chrome" {
