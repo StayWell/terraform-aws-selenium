@@ -61,7 +61,7 @@ locals {
   chrome_env = [
     {
       name  = "HUB_HOST"
-      value = aws_route53_record.hub.name
+      value = "https://${aws_route53_record.hub.name}"
     },
     {
       name  = "HUB_PORT"

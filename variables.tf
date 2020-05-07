@@ -59,12 +59,12 @@ variable "opera_image" {
 
 variable "cpu" {
   description = "(Optional) https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html"
-  default     = "512"
+  default     = "256"
 }
 
 variable "memory" {
   description = "(Optional) https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html"
-  default     = "2048" # must be in integer format to maintain idempotency
+  default     = "512" # must be in integer format to maintain idempotency
 }
 
 variable "chrome_replicas" {
