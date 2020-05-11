@@ -1,9 +1,5 @@
-variable "private_subnet_ids" {
-  description = "(Required) IDs of the subnets to which the services and database will be deployed"
-}
-
-variable "public_subnet_ids" {
-  description = "(Required) IDs of the subnets to which the load balancer will be deployed"
+variable "subnet_ids" {
+  description = "(Required) IDs of the subnets to which the services and load balancer will be deployed"
 }
 
 variable "domain" {
@@ -12,10 +8,6 @@ variable "domain" {
 
 variable "zone_id" {
   description = "(Required) https://www.terraform.io/docs/providers/aws/r/route53_record.html#zone_id"
-}
-
-variable "certificate_arn" {
-  description = "(Required) https://www.terraform.io/docs/providers/aws/r/lb_listener.html#certificate_arn"
 }
 
 variable "vpc_id" {
@@ -100,11 +92,6 @@ variable "log_retention" {
 variable "protection" {
   description = "(Optional) Protect ALB and application logs from deletion"
   default     = false
-}
-
-variable "ssl_policy" {
-  description = "(Optional) https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-security-policy-table.html"
-  default     = "ELBSecurityPolicy-TLS-1-2-2017-01"
 }
 
 variable "environment" {

@@ -28,7 +28,7 @@ resource "aws_ecs_service" "hub" {
 
   network_configuration {
     security_groups = [aws_security_group.ecs.id]
-    subnets         = tolist(var.private_subnet_ids)
+    subnets         = tolist(var.subnet_ids)
   }
 }
 
@@ -59,6 +59,22 @@ locals {
   ]
 }
 
+resource "aws_lb_listener" "hub" {
+  load_balancer_arn = aws_lb.this.arn
+  depends_on        = [aws_lb.this] # https://github.com/terraform-providers/terraform-provider-aws/issues/9976
+  port              = local.hub[0].portMappings[0].containerPort
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.hub.arn
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
 resource "aws_lb_target_group" "hub" {
   name        = "${var.id}-hub"
   port        = local.hub[0].portMappings[0].containerPort
@@ -69,33 +85,6 @@ resource "aws_lb_target_group" "hub" {
 
   health_check {
     path = "/"
-  }
-}
-
-resource "aws_lb_listener_rule" "hub" {
-  listener_arn = aws_lb_listener.this.arn
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.hub.arn
-  }
-
-  condition {
-    host_header {
-      values = [aws_route53_record.hub.name]
-    }
-  }
-}
-
-resource "aws_route53_record" "hub" {
-  name    = "selenium-hub.${var.domain}"
-  type    = "A"
-  zone_id = var.zone_id
-
-  alias {
-    name                   = aws_lb.this.dns_name
-    zone_id                = aws_lb.this.zone_id
-    evaluate_target_health = false
   }
 }
 

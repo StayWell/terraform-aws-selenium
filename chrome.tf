@@ -20,7 +20,7 @@ resource "aws_ecs_service" "chrome" {
 
   network_configuration {
     security_groups = [aws_security_group.ecs.id]
-    subnets         = tolist(var.private_subnet_ids)
+    subnets         = tolist(var.subnet_ids)
   }
 }
 
@@ -56,18 +56,6 @@ locals {
       value = aws_route53_record.hub.name
     },
   ]
-}
-
-resource "aws_route53_record" "chrome" {
-  name    = "selenium-chrome.${var.domain}"
-  type    = "A"
-  zone_id = var.zone_id
-
-  alias {
-    name                   = aws_lb.this.dns_name
-    zone_id                = aws_lb.this.zone_id
-    evaluate_target_health = false
-  }
 }
 
 resource "aws_cloudwatch_log_group" "chrome" {

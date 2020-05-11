@@ -1,10 +1,8 @@
 module "this" {
   source             = "../"
-  public_subnet_ids  = ["${aws_subnet.a.id}","${aws_subnet.b.id}"]
-  private_subnet_ids = ["${aws_subnet.a.id}","${aws_subnet.b.id}"]
+  subnet_ids = ["${aws_subnet.a.id}","${aws_subnet.b.id}"]
   vpc_id             = aws_vpc.this.id
-  domain             = "devops-staywell.com"
-  certificate_arn    = "blah"
+  domain             = "selenium.devops-staywell.com"
   zone_id            = "blah"
 }
 

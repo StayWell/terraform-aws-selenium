@@ -1,33 +1,13 @@
 resource "aws_lb" "this" {
   name_prefix     = "${var.short_id}-"
+  internal        = true
   security_groups = ["${aws_security_group.alb.id}"]
-  subnets         = tolist(var.public_subnet_ids)
+  subnets         = tolist(var.subnet_ids)
   tags            = var.tags
 
   access_logs {
     bucket  = aws_s3_bucket.this.bucket
     enabled = true
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_lb_listener" "this" {
-  load_balancer_arn = aws_lb.this.arn
-  depends_on        = [aws_lb.this] # https://github.com/terraform-providers/terraform-provider-aws/issues/9976
-  port              = local.hub[0].portMappings[0].containerPort
-  protocol          = "HTTP"
-
-  default_action {
-    type = "fixed-response"
-
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "No valid routing rule"
-      status_code  = "400"
-    }
   }
 
   lifecycle {
@@ -78,6 +58,18 @@ data "aws_iam_policy_document" "s3" {
       type        = "AWS"
       identifiers = [data.aws_elb_service_account.this.arn]
     }
+  }
+}
+
+resource "aws_route53_record" "this" {
+  name    = var.domain
+  type    = "A"
+  zone_id = var.zone_id
+
+  alias {
+    name                   = aws_lb.this.dns_name
+    zone_id                = aws_lb.this.zone_id
+    evaluate_target_health = false
   }
 }
 
