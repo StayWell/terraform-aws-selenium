@@ -17,7 +17,6 @@ resource "aws_ecs_service" "hub" {
   launch_type                       = "FARGATE"
   propagate_tags                    = "SERVICE"
   health_check_grace_period_seconds = 30
-  depends_on                        = [aws_lb_listener_rule.hub]
   tags                              = var.tags
 
   load_balancer {

@@ -53,7 +53,7 @@ locals {
   chrome_env = [
     {
       name  = "HUB_HOST"
-      value = aws_route53_record.hub.name
+      value = aws_route53_record.this.name
     },
   ]
 }
