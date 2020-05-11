@@ -32,6 +32,12 @@ locals {
       essential   = true
       environment = concat(local.chrome_env, var.environment)
 
+      command = [
+        "/bin/bash",
+        "-c",
+        "export REMOTE_HOST=http://$(curl -s http://169.254.170.2/v2/metadata | jq -r '.Containers[1].Networks[0].IPv4Addresses[0]'):5555 ; /opt/bin/entry_point.sh"
+      ]
+
       portMappings = [
         {
           containerPort = 5555
