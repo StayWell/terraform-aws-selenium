@@ -98,3 +98,8 @@ variable "environment" {
   description = "(Optional) Additional container environment variables"
   default     = []
 }
+
+variable "hub_environment" {
+  description = "(Optional) Additional hub environment variables"
+  default     = []
+}

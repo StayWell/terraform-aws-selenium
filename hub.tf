@@ -37,7 +37,7 @@ locals {
       name        = "this"
       image       = var.hub_image
       essential   = true
-      environment = var.environment
+      environment = var.hub_environment
 
       portMappings = [
         {
